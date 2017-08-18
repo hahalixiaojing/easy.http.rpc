@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import easy.http.rpc.ex.HttpServerException;
 import easy.http.rpc.okhttp.OkHttp3Client;
 
+import javax.print.DocFlavor;
+import javax.tools.JavaCompiler;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -50,18 +52,23 @@ public class DefaultInvocationHandler implements InvocationHandler {
         if (method.getGenericReturnType() instanceof ParameterizedType) {
             ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
 
-            if (returnType == java.util.List.class) {
+            if (returnType == java.util.List.class || returnType == java.util.ArrayList.class) {
                 Type type = genericReturnType.getActualTypeArguments()[0];
-                return JSON.parseArray(data, new Type[]{type});
-            }
-
-            if (returnType == java.util.ArrayList.class) {
-                Type type = genericReturnType.getActualTypeArguments()[0];
-                return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
+                return this.listReturnDataParse(data, type);
             }
             return JSON.parseObject(data, genericReturnType);
         }
         return JSON.parseObject(data, returnType);
+    }
+
+    private Object listReturnDataParse(String data, Type type) {
+        if (type == java.lang.String.class) {
+            return new ArrayList<String>(JSON.parseArray(data, String.class));
+        }
+        if (type == java.lang.Integer.class) {
+            return new ArrayList<Integer>(JSON.parseArray(data, Integer.class));
+        }
+        return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
     }
 
     private String getApiUrl(String interfaceClassName, String methodName) {
