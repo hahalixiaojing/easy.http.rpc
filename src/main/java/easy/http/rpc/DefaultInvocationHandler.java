@@ -68,6 +68,9 @@ public class DefaultInvocationHandler implements InvocationHandler {
         if (type == java.lang.Integer.class) {
             return new ArrayList<Integer>(JSON.parseArray(data, Integer.class));
         }
+        if (type == java.lang.Float.class) {
+            return new ArrayList<Float>(JSON.parseArray(data, Float.class));
+        }
         return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
     }
 
