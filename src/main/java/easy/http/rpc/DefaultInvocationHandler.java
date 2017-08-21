@@ -40,38 +40,10 @@ public class DefaultInvocationHandler implements InvocationHandler {
             if (returnType == void.class) {
                 return null;
             }
-            return this.returnDataParse(method, request.responseData);
+            return JSONStringToObject.methodReturnDataToObject(method, request.responseData);
         } else {
             throw new HttpServerException(request.httpStatus, apiUrl, request.errorMessage);
         }
-    }
-
-    private Object returnDataParse(Method method, String data) {
-
-        Class<?> returnType = method.getReturnType();
-        if (method.getGenericReturnType() instanceof ParameterizedType) {
-            ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
-
-            if (returnType == java.util.List.class || returnType == java.util.ArrayList.class) {
-                Type type = genericReturnType.getActualTypeArguments()[0];
-                return this.listReturnDataParse(data, type);
-            }
-            return JSON.parseObject(data, genericReturnType);
-        }
-        return JSON.parseObject(data, returnType);
-    }
-
-    private Object listReturnDataParse(String data, Type type) {
-        if (type == java.lang.String.class) {
-            return new ArrayList<String>(JSON.parseArray(data, String.class));
-        }
-        if (type == java.lang.Integer.class) {
-            return new ArrayList<Integer>(JSON.parseArray(data, Integer.class));
-        }
-        if (type == java.lang.Float.class) {
-            return new ArrayList<Float>(JSON.parseArray(data, Float.class));
-        }
-        return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
     }
 
     private String getApiUrl(String interfaceClassName, String methodName) {
