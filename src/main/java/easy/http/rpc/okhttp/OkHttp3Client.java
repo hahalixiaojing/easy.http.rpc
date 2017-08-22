@@ -1,14 +1,11 @@
 package easy.http.rpc.okhttp;
 
 import com.alibaba.fastjson.JSON;
-import easy.http.rpc.HttpResponseData;
 import easy.http.rpc.IHttpClient;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import java.io.IOException;
 
 public class OkHttp3Client implements IHttpClient {
     private final OkHttpClient client = new OkHttpClient();
