@@ -9,6 +9,7 @@ import easy.http.rpc.ex.HttpServerException;
 import easy.http.rpc.okhttp.OkHttp3Client;
 import org.junit.Test;
 
+import javax.print.DocFlavor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public class ProxyTest {
     public void stringResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
-                return new HttpResponseData(JSON.toJSONString("1"), 200);
+            public String request(String apiUrl, Object[] params) {
+                return "1";
             }
         });
         String a = build.create("a", 1, false);
@@ -32,8 +33,8 @@ public class ProxyTest {
     public void intResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
-                return new HttpResponseData(JSON.toJSONString(1), 200);
+            public String request(String apiUrl, Object[] params) {
+                return JSON.toJSONString(1);
             }
         });
         int a = build.sub(1, 1);
@@ -43,8 +44,8 @@ public class ProxyTest {
     public void arrayResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
-                return new HttpResponseData(JSON.toJSONString(new int[]{1, 2, 3}), 200);
+            public String request(String apiUrl, Object[] params) {
+                return JSON.toJSONString(new int[]{1, 2, 3});
             }
         });
 
@@ -55,7 +56,7 @@ public class ProxyTest {
     public void objArrayResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 RetObj retObj = new RetObj();
                 retObj.setA(1);
@@ -72,7 +73,7 @@ public class ProxyTest {
 
                 retObj.setMap(hashMap);
 
-                return new HttpResponseData(JSON.toJSONString(new RetObj[]{retObj}), 200);
+                return JSON.toJSONString(new RetObj[]{retObj});
             }
         });
 
@@ -83,12 +84,12 @@ public class ProxyTest {
     public void stringListArrayResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 List<String> strings = new ArrayList<>();
                 strings.add("aaaa");
 
-                return new HttpResponseData(JSON.toJSONString(strings), 200);
+                return JSON.toJSONString(strings);
             }
         });
 
@@ -99,12 +100,12 @@ public class ProxyTest {
     public void arrayListResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 ArrayList<String> strings = new ArrayList<>();
                 strings.add("aaaa");
 
-                return new HttpResponseData(JSON.toJSONString(strings), 200);
+                return JSON.toJSONString(strings);
             }
         });
 
@@ -115,7 +116,7 @@ public class ProxyTest {
     public void arrayListObjTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 RetObj retObj = new RetObj();
                 retObj.setA(1);
@@ -135,7 +136,7 @@ public class ProxyTest {
                 ArrayList<RetObj> list1 = new ArrayList<>();
                 list1.add(retObj);
 
-                return new HttpResponseData(JSON.toJSONString(list1), 200);
+                return JSON.toJSONString(list1);
             }
         });
 
@@ -146,7 +147,7 @@ public class ProxyTest {
     public void objResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 RetObj retObj = new RetObj();
                 retObj.setA(1);
@@ -163,7 +164,7 @@ public class ProxyTest {
 
                 retObj.setMap(hashMap);
 
-                return new HttpResponseData(JSON.toJSONString(retObj), 200);
+                return JSON.toJSONString(retObj);
             }
         });
         RetObj a = build.getObj("a");
@@ -174,7 +175,7 @@ public class ProxyTest {
     public void objListResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 RetObj retObj = new RetObj();
                 retObj.setA(1);
@@ -194,7 +195,7 @@ public class ProxyTest {
                 ArrayList<RetObj> list1 = new ArrayList<>();
                 list1.add(retObj);
 
-                return new HttpResponseData(JSON.toJSONString(list1), 200);
+                return JSON.toJSONString(list1);
             }
         });
 
@@ -205,12 +206,12 @@ public class ProxyTest {
     public void MapListResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 Map<String, String> map = new HashMap<>();
                 map.put("a", "a");
 
-                return new HttpResponseData(JSON.toJSONString(map), 200);
+                return JSON.toJSONString(map);
             }
         });
 
@@ -221,7 +222,7 @@ public class ProxyTest {
     public void MapObjListResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
                 RetObj retObj = new RetObj();
                 retObj.setA(1);
                 retObj.setAlist(new int[]{1, 2, 3});
@@ -241,7 +242,7 @@ public class ProxyTest {
                 Map<String, RetObj> map = new HashMap<>();
                 map.put("a", retObj);
 
-                return new HttpResponseData(JSON.toJSONString(map), 200);
+                return JSON.toJSONString(map);
             }
         });
 
@@ -252,12 +253,12 @@ public class ProxyTest {
     public void intGeResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 Resutl<int[]> ext = new Resutl<>();
                 ext.setData(new int[]{1, 2, 3});
 
-                return new HttpResponseData(JSON.toJSONString(ext), 200);
+                return JSON.toJSONString(ext);
             }
         });
 
@@ -332,7 +333,7 @@ public class ProxyTest {
     public void objgeResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
 
                 Resutl<ArrayList<RetObj>> ext = new Resutl<>();
                 RetObj retObj = new RetObj();
@@ -355,7 +356,7 @@ public class ProxyTest {
 
                 ext.setData(item);
 
-                return new HttpResponseData(JSON.toJSONString(ext), 200);
+                return JSON.toJSONString(ext);
             }
         });
 
@@ -366,7 +367,7 @@ public class ProxyTest {
     public void GenericResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
-            public HttpResponseData request(String apiUrl, Object[] params) {
+            public String request(String apiUrl, Object[] params) {
                 Resutl<RetObj> f2 = new Resutl<>();
 
                 RetObj retObj = new RetObj();
@@ -387,7 +388,7 @@ public class ProxyTest {
                 f2.setData(retObj);
 
 
-                return new HttpResponseData(JSON.toJSONString(f2), 200);
+                return JSON.toJSONString(f2);
             }
         });
 

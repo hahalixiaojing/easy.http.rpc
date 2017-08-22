@@ -14,7 +14,7 @@ public class OkHttp3Client implements IHttpClient {
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
-    public HttpResponseData request(String apiUrl, Object[] params) {
+    public String request(String apiUrl, Object[] params) throws Exception {
 
         FormBody.Builder builder = new FormBody.Builder();
 
@@ -25,20 +25,24 @@ public class OkHttp3Client implements IHttpClient {
         }
         Request request = new Request.Builder()
                 .url(apiUrl)
-                .addHeader("Accept","application/json")
+                .addHeader("Accept", "application/json")
                 .post(builder.build())
                 .build();
-        try {
-            Response response = client.newCall(request).execute();
-            String responseData = response.body().string();
-            if (response.code() == 200) {
-                return new HttpResponseData(responseData, response.code());
-            } else {
-                return new HttpResponseData("", response.code(), responseData);
-            }
+        Response response = client.newCall(request).execute();
 
-        } catch (IOException e) {
-            return new HttpResponseData("", 500, e.getMessage());
+
+        String explicitEx = response.header("explicitEx");
+        if (explicitEx != null && !explicitEx.equals("")) {
+            Class<?> aClass = Class.forName(explicitEx);
+            if (aClass != null) {
+                throw (Exception) JSON.parseObject(response.body().string(), aClass);
+            }
         }
+
+        if (response.code() != 200) {
+            throw new RuntimeException(response.body().string());
+        }
+
+        return response.body().string();
     }
 }

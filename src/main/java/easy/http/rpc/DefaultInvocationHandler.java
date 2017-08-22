@@ -33,16 +33,17 @@ public class DefaultInvocationHandler implements InvocationHandler {
         String methodName = method.getName();
         Class<?> returnType = method.getReturnType();
 
+        try {
 
-        String apiUrl = this.getApiUrl(interfaceClassName, methodName);
-        HttpResponseData request = this.client.request(apiUrl, args);
-        if (request.httpStatus == 200) {
+            String apiUrl = this.getApiUrl(interfaceClassName, methodName);
+            String request = this.client.request(apiUrl, args);
+
             if (returnType == void.class) {
                 return null;
             }
-            return JSONStringToObject.methodReturnDataToObject(method, request.responseData);
-        } else {
-            throw new HttpServerException(request.httpStatus, apiUrl, request.errorMessage);
+            return JSONStringToObject.methodReturnDataToObject(method, request);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 
