@@ -2,14 +2,11 @@ package easy.http.rpc.inter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import easy.http.rpc.HttpResponseData;
 import easy.http.rpc.IHttpClient;
 import easy.http.rpc.ServiceBuilder;
-import easy.http.rpc.ex.HttpServerException;
 import easy.http.rpc.okhttp.OkHttp3Client;
 import org.junit.Test;
 
-import javax.print.DocFlavor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -429,19 +426,6 @@ public class ProxyTest {
 
         Resutl resutl1 = JSON.parseObject(s1, new TypeReference<Resutl<RetObj>>() {
         });
-    }
-
-    @Test
-    public void requestHttpResultTest() {
-        ITestService build = this.create(new OkHttp3Client());
-
-        try {
-
-            String a = build.create("a", 1, true);
-            System.out.println(a);
-        } catch (HttpServerException ex) {
-            System.out.println(ex.getUrl());
-        }
     }
 
     @Test

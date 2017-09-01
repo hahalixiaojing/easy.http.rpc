@@ -1,21 +1,15 @@
 package easy.http.rpc;
 
-import com.alibaba.fastjson.JSON;
-import easy.http.rpc.ex.HttpServerException;
 import easy.http.rpc.okhttp.OkHttp3Client;
 
-import javax.print.DocFlavor;
-import javax.tools.JavaCompiler;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class DefaultInvocationHandler implements InvocationHandler {
 
     private final String baseApiUrl;
     private final IHttpClient client;
+    private final ILoadBalanceApiUrl loadBalanceApiUrl;
 
     public DefaultInvocationHandler(String baseApiUrl, IHttpClient client) {
         this.baseApiUrl = baseApiUrl;
@@ -24,6 +18,13 @@ public class DefaultInvocationHandler implements InvocationHandler {
         } else {
             this.client = client;
         }
+        this.loadBalanceApiUrl = null;
+    }
+
+    public DefaultInvocationHandler(ILoadBalanceApiUrl loadBalanceApiUrl, IHttpClient client) {
+        this.baseApiUrl = null;
+        this.client = client;
+        this.loadBalanceApiUrl = loadBalanceApiUrl;
     }
 
     @Override
@@ -49,9 +50,14 @@ public class DefaultInvocationHandler implements InvocationHandler {
 
     private String getApiUrl(String interfaceClassName, String methodName) {
 
-        if (baseApiUrl.endsWith("/")) {
-            return this.baseApiUrl + interfaceClassName + "/" + methodName;
+        String apiUrl = this.baseApiUrl;
+        if (this.baseApiUrl == null) {
+            apiUrl = this.loadBalanceApiUrl.getApiUrl(interfaceClassName);
         }
-        return this.baseApiUrl + "/" + interfaceClassName + " / " + methodName;
+
+        if (apiUrl.endsWith("/")) {
+            return apiUrl + interfaceClassName + "/" + methodName;
+        }
+        return apiUrl + "/" + interfaceClassName + " / " + methodName;
     }
 }

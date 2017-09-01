@@ -5,19 +5,25 @@ import java.lang.reflect.Proxy;
 
 public class ServiceBuilder<T> {
 
-    private final String baseApiUrl;
     private final Class<T> cls;
     private final InvocationHandler invocationHandler;
 
     public ServiceBuilder(String baseApiUrl, Class<T> cls, InvocationHandler invocationHandler, IHttpClient httpReqeust) {
-        this.baseApiUrl = baseApiUrl;
         this.cls = cls;
         if (invocationHandler != null) {
             this.invocationHandler = invocationHandler;
         } else {
-            this.invocationHandler = new DefaultInvocationHandler(this.baseApiUrl, httpReqeust);
+            this.invocationHandler = new DefaultInvocationHandler(baseApiUrl, httpReqeust);
         }
+    }
 
+    public ServiceBuilder(ILoadBalanceApiUrl loadBalanceApiUrl, Class<T> cls, InvocationHandler invocationHandler, IHttpClient httpReqeust) {
+        this.cls = cls;
+        if (invocationHandler != null) {
+            this.invocationHandler = invocationHandler;
+        } else {
+            this.invocationHandler = new DefaultInvocationHandler(loadBalanceApiUrl, httpReqeust);
+        }
     }
 
     public T build() {
