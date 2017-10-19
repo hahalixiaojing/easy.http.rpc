@@ -52,6 +52,6 @@ public class DefaultInvocationHandler implements InvocationHandler {
         if (this.baseApiUrl.endsWith("/")) {
             return this.baseApiUrl + interfaceClassName + "/" + methodName;
         }
-        return this.baseApiUrl + "/" + interfaceClassName + " / " + methodName;
+        return this.baseApiUrl + "/" + interfaceClassName + "/" + methodName;
     }
 }
