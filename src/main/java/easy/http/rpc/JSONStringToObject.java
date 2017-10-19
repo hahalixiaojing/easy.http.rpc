@@ -8,6 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class JSONStringToObject {
 
@@ -43,10 +44,10 @@ public class JSONStringToObject {
     }
 
     private static Object listReturnDataParse(String data, Type type) throws ClassNotFoundException {
-        data = "[]";
         if (data == null || data.equals("") || data.equals("[]")) {
-            return Arrays.asList(Array.newInstance(Class.forName(type.toString().replace("class ","")) ,0));
+            return Collections.emptyList();
 
+//            return Arrays.asList(Array.newInstance(Class.forName(type.toString().replace("class ", "")), 0));
         }
 
         if (type == String.class) {

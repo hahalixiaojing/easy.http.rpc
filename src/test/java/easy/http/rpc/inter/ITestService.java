@@ -28,9 +28,13 @@ public interface ITestService {
 
     ArrayList<RetObj> arrayListObj(String b);
 
+    List<TopicOffsetInfo> tttt(String b);
+
     Map<String, String> mapList(String b);
 
     Map<String, RetObj> mapObjList(String b);
+
+    Map<Integer, Long> mapIntLong(String b);
 
     Resutl<RetObj> rr(String b);
 
@@ -39,5 +43,6 @@ public interface ITestService {
     Resutl<ArrayList<RetObj>> objge(String b);
 
     RetObj retObj(RetObj retObj);
+
     List<RetObj> retObjList(RetObj retObj);
 }

@@ -200,6 +200,47 @@ public class ProxyTest {
     }
 
     @Test
+    public void mapIntLong() {
+        ITestService build = this.create(new IHttpClient() {
+            @Override
+            public String request(String apiUrl, Object[] params) {
+
+                Map<Integer, Long> map = new HashMap<>();
+
+
+                return JSON.toJSONString(map);
+            }
+        });
+
+        Map<Integer, Long> a = build.mapIntLong("a");
+    }
+
+
+    @Test
+    public void tttt() {
+        ITestService build = this.create(new IHttpClient() {
+            @Override
+            public String request(String apiUrl, Object[] params) {
+
+
+                List<TopicOffsetInfo> list = new ArrayList<>();
+
+                Map<Integer, Long> map = new HashMap<>();
+                map.put(1, 100L);
+
+                list.add(new TopicOffsetInfo("123", map));
+
+
+                String a ="[{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}},{\"topic\":\"test\",\"offset\":{\"0\":7,\"1\":0,\"2\":0,\"3\":0,\"4\":0,\"5\":0,\"6\":9,\"7\":8,\"8\":0,\"9\":6}}]";
+
+                return a;
+            }
+        });
+
+        List<TopicOffsetInfo> a = build.tttt("a");
+    }
+
+    @Test
     public void MapListResultTest() {
         ITestService build = this.create(new IHttpClient() {
             @Override
