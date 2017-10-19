@@ -1,6 +1,8 @@
 package easy.http.rpc;
 
 import easy.http.rpc.okhttp.OkHttp3Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -9,6 +11,7 @@ public class DefaultInvocationHandler implements InvocationHandler {
 
     private final String baseApiUrl;
     private final IHttpClient client;
+    private final Logger logger = LoggerFactory.getLogger(DefaultInvocationHandler.class);
 
     public DefaultInvocationHandler(String baseApiUrl, IHttpClient client) {
         this.baseApiUrl = baseApiUrl;
@@ -31,22 +34,23 @@ public class DefaultInvocationHandler implements InvocationHandler {
         String methodName = method.getName();
         Class<?> returnType = method.getReturnType();
 
+        String request = "";
         try {
 
             String apiUrl = this.getApiUrl(interfaceClassName, methodName);
-            String request = this.client.request(apiUrl, args);
+            request = this.client.request(apiUrl, args);
 
             if (returnType == void.class) {
                 return null;
             }
             return JSONStringToObject.methodReturnDataToObject(method, request);
         } catch (Exception ex) {
+            this.logger.error(request, ex);
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 
     private String getApiUrl(String interfaceClassName, String methodName) {
-
 
 
         if (this.baseApiUrl.endsWith("/")) {

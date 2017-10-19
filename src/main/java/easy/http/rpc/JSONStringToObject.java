@@ -75,6 +75,6 @@ public class JSONStringToObject {
             return new ArrayList<Byte>(JSON.parseArray(data, Byte.class));
         }
 
-        return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
+        return new ArrayList<Object>(JSON.parseArray(data, Class.forName(type.toString().replace("class ", ""))));
     }
 }
