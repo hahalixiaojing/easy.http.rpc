@@ -1,5 +1,7 @@
 package easy.http.rpc;
 
+import easy.http.rpc.okhttp.OkHttp3Client;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
@@ -15,6 +17,10 @@ public class ServiceBuilder<T> {
         } else {
             this.invocationHandler = new DefaultInvocationHandler(baseApiUrl, httpReqeust);
         }
+    }
+
+    public ServiceBuilder(String baseApiUrl, Class<T> cls) {
+        this(baseApiUrl, cls, null, new OkHttp3Client());
     }
 
     public ServiceBuilder(Class<T> cls, InvocationHandler invocationHandler, IHttpClient httpReqeust) {
