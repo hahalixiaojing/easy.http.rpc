@@ -2,30 +2,32 @@ package easy.http.rpc;
 
 import com.alibaba.fastjson.JSON;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class JSONStringToObject {
 
     private JSONStringToObject() {
     }
 
-    public static Object methodReturnDataToObject(Method m, String data) {
+    public static Object methodReturnDataToObject(Method m, String data) throws ClassNotFoundException {
         Class<?> returnType = m.getReturnType();
         Type type = m.getGenericReturnType();
 
         return stringToObject(returnType, type, data);
     }
 
-    public static Object methodParameterDataToObject(Method m, int paramIndex, String data) {
+    public static Object methodParameterDataToObject(Method m, int paramIndex, String data) throws ClassNotFoundException {
         Class<?> paramType = m.getParameterTypes()[paramIndex];
         Type type = m.getGenericParameterTypes()[paramIndex];
         return stringToObject(paramType, type, data);
     }
 
-    private static Object stringToObject(Class<?> cls, Type type, String data) {
+    private static Object stringToObject(Class<?> cls, Type type, String data) throws ClassNotFoundException {
 
 
         if (type instanceof ParameterizedType) {
@@ -40,7 +42,13 @@ public class JSONStringToObject {
         return JSON.parseObject(data, cls);
     }
 
-    private static Object listReturnDataParse(String data, Type type) {
+    private static Object listReturnDataParse(String data, Type type) throws ClassNotFoundException {
+        data = "[]";
+        if (data == null || data.equals("") || data.equals("[]")) {
+            return Arrays.asList(Array.newInstance(Class.forName(type.toString().replace("class ","")) ,0));
+
+        }
+
         if (type == String.class) {
             return new ArrayList<String>(JSON.parseArray(data, String.class));
         }
@@ -64,8 +72,8 @@ public class JSONStringToObject {
         }
         if (type == Byte.class) {
             return new ArrayList<Byte>(JSON.parseArray(data, Byte.class));
-
         }
+
         return new ArrayList<Object>(JSON.parseArray(data, new Type[]{type}));
     }
 }
