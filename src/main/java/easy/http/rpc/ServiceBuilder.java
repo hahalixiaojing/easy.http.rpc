@@ -17,12 +17,12 @@ public class ServiceBuilder<T> {
         }
     }
 
-    public ServiceBuilder(ILoadBalanceApiUrl loadBalanceApiUrl, Class<T> cls, InvocationHandler invocationHandler, IHttpClient httpReqeust) {
+    public ServiceBuilder(Class<T> cls, InvocationHandler invocationHandler, IHttpClient httpReqeust) {
         this.cls = cls;
         if (invocationHandler != null) {
             this.invocationHandler = invocationHandler;
         } else {
-            this.invocationHandler = new DefaultInvocationHandler(loadBalanceApiUrl, httpReqeust);
+            this.invocationHandler = new DefaultInvocationHandler(httpReqeust);
         }
     }
 

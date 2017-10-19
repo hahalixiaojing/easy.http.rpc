@@ -9,7 +9,6 @@ public class DefaultInvocationHandler implements InvocationHandler {
 
     private final String baseApiUrl;
     private final IHttpClient client;
-    private final ILoadBalanceApiUrl loadBalanceApiUrl;
 
     public DefaultInvocationHandler(String baseApiUrl, IHttpClient client) {
         this.baseApiUrl = baseApiUrl;
@@ -18,13 +17,11 @@ public class DefaultInvocationHandler implements InvocationHandler {
         } else {
             this.client = client;
         }
-        this.loadBalanceApiUrl = null;
     }
 
-    public DefaultInvocationHandler(ILoadBalanceApiUrl loadBalanceApiUrl, IHttpClient client) {
+    public DefaultInvocationHandler(IHttpClient client) {
         this.baseApiUrl = null;
         this.client = client;
-        this.loadBalanceApiUrl = loadBalanceApiUrl;
     }
 
     @Override
@@ -50,14 +47,11 @@ public class DefaultInvocationHandler implements InvocationHandler {
 
     private String getApiUrl(String interfaceClassName, String methodName) {
 
-        String apiUrl = this.baseApiUrl;
-        if (this.baseApiUrl == null) {
-            apiUrl = this.loadBalanceApiUrl.getApiUrl(interfaceClassName);
-        }
 
-        if (apiUrl.endsWith("/")) {
-            return apiUrl + interfaceClassName + "/" + methodName;
+
+        if (this.baseApiUrl.endsWith("/")) {
+            return this.baseApiUrl + interfaceClassName + "/" + methodName;
         }
-        return apiUrl + "/" + interfaceClassName + " / " + methodName;
+        return this.baseApiUrl + "/" + interfaceClassName + " / " + methodName;
     }
 }
