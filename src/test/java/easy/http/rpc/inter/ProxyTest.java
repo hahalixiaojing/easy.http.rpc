@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import easy.http.rpc.IHttpClient;
 import easy.http.rpc.ServiceBuilder;
-import easy.http.rpc.okhttp.OkHttp3Client;
+import easy.http.rpc.okhttp.DefaultOkHttp3Client;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -471,7 +471,7 @@ public class ProxyTest {
 
     @Test
     public void retObjResultTest() {
-        ITestService build = this.create(new OkHttp3Client());
+        ITestService build = this.create(new DefaultOkHttp3Client());
 
         Resutl<RetObj> f2 = new Resutl<>();
 
@@ -496,7 +496,7 @@ public class ProxyTest {
 
     @Test
     public void retObjResultListTest() {
-        ITestService build = this.create(new OkHttp3Client());
+        ITestService build = this.create(new DefaultOkHttp3Client());
         Resutl<RetObj> f2 = new Resutl<>();
 
         RetObj retObj = new RetObj();
@@ -520,7 +520,7 @@ public class ProxyTest {
 
     @Test
     public void noParamTest() {
-        ITestService build = this.create(new OkHttp3Client());
+        ITestService build = this.create(new DefaultOkHttp3Client());
 
         String s = build.testNoParams();
         System.out.println(s);

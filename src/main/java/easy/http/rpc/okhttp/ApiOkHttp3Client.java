@@ -7,19 +7,24 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class OkHttp3Client implements IHttpClient {
+public class ApiOkHttp3Client implements IHttpClient {
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
     public String request(String apiUrl, Object[] params) throws Exception {
 
-        FormBody.Builder builder = new FormBody.Builder();
 
-        if (params != null && params.length > 0) {
-            for (int i = 0; i < params.length; i++) {
-                builder.addEncoded(String.valueOf(i), JSON.toJSONString(params[i]));
-            }
+        String[] argsArray = new String[params.length];
+        for (int i = 0; i < argsArray.length; i++) {
+            argsArray[i] = JSON.toJSONString(params[i]);
         }
+
+        String args = JSON.toJSONString(argsArray);
+
+
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.addEncoded("args", args);
+
         Request request = new Request.Builder()
                 .url(apiUrl)
                 .addHeader("Accept", "application/json")

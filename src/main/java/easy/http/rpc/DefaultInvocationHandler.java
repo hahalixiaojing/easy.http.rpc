@@ -1,6 +1,6 @@
 package easy.http.rpc;
 
-import easy.http.rpc.okhttp.OkHttp3Client;
+import easy.http.rpc.okhttp.DefaultOkHttp3Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class DefaultInvocationHandler implements InvocationHandler {
     public DefaultInvocationHandler(String baseApiUrl, IHttpClient client) {
         this.baseApiUrl = baseApiUrl;
         if (client == null) {
-            this.client = new OkHttp3Client();
+            this.client = new DefaultOkHttp3Client();
         } else {
             this.client = client;
         }
