@@ -8,7 +8,19 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ApiOkHttp3Client implements IHttpClient {
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client;
+
+    public ApiOkHttp3Client(OkHttpClient okHttpClient) {
+        if (okHttpClient != null) {
+            this.client = okHttpClient;
+        } else {
+            this.client = new OkHttpClient();
+        }
+    }
+
+    public ApiOkHttp3Client() {
+        this(null);
+    }
 
     @Override
     public String request(String apiUrl, Object[] params) throws Exception {
