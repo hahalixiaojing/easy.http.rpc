@@ -45,9 +45,8 @@ public class JSONStringToObject {
 
     private static Object listReturnDataParse(String data, Type type) throws ClassNotFoundException {
         if (data == null || data.equals("") || data.equals("[]")) {
-            return Collections.emptyList();
+            return new ArrayList<Object>(JSON.parseArray("[]", Class.forName(type.toString().replace("class ", ""))));
 
-//            return Arrays.asList(Array.newInstance(Class.forName(type.toString().replace("class ", "")), 0));
         }
 
         if (type == String.class) {
