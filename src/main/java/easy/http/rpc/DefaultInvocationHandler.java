@@ -46,7 +46,7 @@ public class DefaultInvocationHandler implements InvocationHandler {
             return JSONStringToObject.methodReturnDataToObject(method, request);
         } catch (Exception ex) {
             this.logger.error(request, ex);
-            throw new RuntimeException(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
