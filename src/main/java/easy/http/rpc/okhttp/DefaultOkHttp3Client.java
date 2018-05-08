@@ -1,6 +1,7 @@
 package easy.http.rpc.okhttp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import easy.http.rpc.IHttpClient;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -29,7 +30,7 @@ public class DefaultOkHttp3Client implements IHttpClient {
 
         if (params != null && params.length > 0) {
             for (int i = 0; i < params.length; i++) {
-                builder.addEncoded(String.valueOf(i), JSON.toJSONString(params[i]));
+                builder.addEncoded(String.valueOf(i), JSON.toJSONString(params[i], SerializerFeature.WriteMapNullValue));
             }
         }
         Request request = new Request.Builder()
