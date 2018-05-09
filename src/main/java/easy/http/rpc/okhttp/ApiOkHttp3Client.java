@@ -29,7 +29,7 @@ public class ApiOkHttp3Client implements IHttpClient {
 
         String[] argsArray = new String[params.length];
         for (int i = 0; i < argsArray.length; i++) {
-            argsArray[i] = JSON.toJSONString(params[i]);
+            argsArray[i] = JSON.toJSONString(params[i], SerializerFeature.WriteMapNullValue);
         }
 
         String args = JSON.toJSONString(argsArray, SerializerFeature.WriteMapNullValue);
