@@ -9,12 +9,14 @@ import java.lang.reflect.Method;
 
 public class DefaultInvocationHandler implements InvocationHandler {
 
-    private final String baseApiUrl;
+    //    private final String baseApiUrl;
     private final IHttpClient client;
     private final Logger logger = LoggerFactory.getLogger(DefaultInvocationHandler.class);
+    private final IAddressSelect addressSelect;
 
-    public DefaultInvocationHandler(String baseApiUrl, IHttpClient client) {
-        this.baseApiUrl = baseApiUrl;
+    public DefaultInvocationHandler(IAddressSelect addressSelect, IHttpClient client) {
+        this.addressSelect = addressSelect;
+//        this.baseApiUrl = baseApiUrl;baseApiUrl
         if (client == null) {
             this.client = new DefaultOkHttp3Client();
         } else {
@@ -22,10 +24,11 @@ public class DefaultInvocationHandler implements InvocationHandler {
         }
     }
 
-    public DefaultInvocationHandler(IHttpClient client) {
-        this.baseApiUrl = null;
-        this.client = client;
-    }
+//    public DefaultInvocationHandler(IHttpClient client) {
+//        this.addressSelect = null;
+//        this.baseApiUrl = null;
+//        this.client = client;
+//    }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -52,10 +55,11 @@ public class DefaultInvocationHandler implements InvocationHandler {
 
     private String getApiUrl(String interfaceClassName, String methodName) {
 
+        String baseApiUrl = this.addressSelect.select();
 
-        if (this.baseApiUrl.endsWith("/")) {
-            return this.baseApiUrl + interfaceClassName + "/" + methodName;
+        if (baseApiUrl.endsWith("/")) {
+            return baseApiUrl + interfaceClassName + "/" + methodName;
         }
-        return this.baseApiUrl + "/" + interfaceClassName + "/" + methodName;
+        return baseApiUrl + "/" + interfaceClassName + "/" + methodName;
     }
 }

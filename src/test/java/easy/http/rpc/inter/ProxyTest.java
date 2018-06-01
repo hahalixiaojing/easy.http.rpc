@@ -231,7 +231,7 @@ public class ProxyTest {
                 list.add(new TopicOffsetInfo("123", map));
 
 
-                String a ="[{\"offset\":{0:7,1:0,2:0,3:10,4:0,5:0,6:9,7:8,8:0,9:6},\"topic\":\"test\"},{\"offset\":{0:7,1:0,2:0,3:10,4:0,5:0,6:9,7:8,8:0,9:6},\"topic\":\"test\"}]";
+                String a = "[{\"offset\":{0:7,1:0,2:0,3:10,4:0,5:0,6:9,7:8,8:0,9:6},\"topic\":\"test\"},{\"offset\":{0:7,1:0,2:0,3:10,4:0,5:0,6:9,7:8,8:0,9:6},\"topic\":\"test\"}]";
 
                 return a;
             }
@@ -528,7 +528,7 @@ public class ProxyTest {
 
 
     private ITestService create(IHttpClient client) {
-        ServiceBuilder<ITestService> serviceServiceBuilder = new ServiceBuilder<>("http://localhost:8091/test/", ITestService.class, null, client);
+        ServiceBuilder<ITestService> serviceServiceBuilder = new ServiceBuilder<>("http://localhost:8091/test/", ITestService.class, client);
         return serviceServiceBuilder.build();
     }
 
